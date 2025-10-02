@@ -199,4 +199,4 @@ npm install
 
 - [Testing Guide](TESTING.md) - How to test your integration
 - [Deployment Guide](DEPLOYMENT.md) - Deploy to production
-- [Common Patterns](PATTERNS.md) - Usage examples
+- [Usage Examples](../README.md#-usage-examples) - Implementation examples in README

@@ -2,7 +2,7 @@
 
 > **Production-ready Stripe payment integration with Next.js 14, TypeScript, and comprehensive security**
 
-A complete, battle-tested Stripe integration boilerplate extracted from production applications processing thousands in monthly transactions. Features include payment processing, subscription management, webhook handling, and comprehensive error handling.
+A production-ready Stripe integration boilerplate extracted from real-world applications. Provides one-time payment processing, webhook event handling, and extensible database schema for future subscription features.
 
 [![Next.js](https://img.shields.io/badge/Next.js-14.1-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
@@ -78,7 +78,6 @@ Visit `http://localhost:3000` to see the demo!
 - [**Setup Guide**](docs/SETUP.md) - Detailed setup instructions
 - [**Testing Guide**](docs/TESTING.md) - How to test your integration
 - [**Deployment Guide**](docs/DEPLOYMENT.md) - Production deployment
-- [**Common Patterns**](docs/PATTERNS.md) - Implementation examples
 
 ## 🎨 Usage Examples
 
@@ -188,12 +187,14 @@ All API routes include security headers:
 ## 📊 Database Schema
 
 The boilerplate includes a complete Prisma schema with:
-- **Payments** - Track all payment intents
-- **Customers** - Store customer information
-- **Subscriptions** - Manage recurring payments
-- **WebhookEvents** - Log all webhook events
+- **Payments** - Track all payment intents ✅ *Active*
+- **Customers** - Store customer information ✅ *Active*
+- **Subscriptions** - Database model ready (webhook handlers included, CRUD endpoints not yet implemented)
+- **WebhookEvents** - Log all webhook events ✅ *Active*
 
 View the complete schema in `prisma/schema.prisma`.
+
+**Note:** Subscription webhook handlers are implemented and will log subscription events. Management endpoints (create/cancel/update) are not included but can be easily added using the existing database schema.
 
 ## 🎯 Production Checklist
 
@@ -209,6 +210,33 @@ Before deploying to production:
 - [ ] Review rate limiting settings
 - [ ] Enable HTTPS
 - [ ] Set up CI/CD pipeline
+
+## ✅ What's Implemented vs 🚧 Future Enhancements
+
+### ✅ **Fully Implemented & Production-Ready**
+- One-time payment processing (Payment Intents)
+- Payment form with Stripe Elements
+- Webhook event handling (10 event types)
+- Rate limiting and security
+- Database logging for payments, customers, webhook events
+- Input validation and error handling
+- Comprehensive documentation
+
+### 🚧 **Database Schema Ready, Endpoints Not Implemented**
+These features have database models and webhook handlers but no API endpoints:
+- Subscription creation/cancellation (database model ready)
+- Payment methods management (schema supports it)
+- Refunds (can be added easily)
+- Customer portal integration
+
+### 💡 **Easy to Add** (~2-4 hours each)
+If you need these features, the groundwork is done:
+- `POST /api/subscriptions` - Create subscription
+- `POST /api/subscriptions/[id]/cancel` - Cancel subscription
+- `POST /api/refunds` - Process refund
+- `GET /api/payment-methods` - List payment methods
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to extend the boilerplate.
 
 ## 🤝 Contributing
 

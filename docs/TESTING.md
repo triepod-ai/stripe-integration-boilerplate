@@ -2,6 +2,8 @@
 
 Comprehensive testing guide for the Stripe Integration Boilerplate.
 
+**What's Covered:** This guide tests the implemented features (one-time payments and webhook handling). Subscription management endpoints are not yet implemented but webhook handlers are tested.
+
 ## Test Card Numbers
 
 Stripe provides test card numbers for different scenarios:
@@ -153,8 +155,8 @@ done
 ### Database
 - [ ] Payments are recorded correctly
 - [ ] Customer records are created
-- [ ] Subscription status updates work
 - [ ] Webhook events are logged
+- [ ] Subscription events are captured (via webhooks)
 
 ## Automated Testing
 
