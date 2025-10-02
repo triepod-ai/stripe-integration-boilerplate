@@ -73,6 +73,23 @@ npm run dev
 
 Visit `http://localhost:3000` to see the demo!
 
+## 💡 Examples
+
+**[Browse All Examples →](examples/)**
+
+Learn by example with 6+ production-ready implementations:
+
+| Example | Description | Difficulty |
+|---------|-------------|------------|
+| [01-basic-checkout](examples/01-basic-checkout/) | Simplest payment implementation | ⭐ Beginner |
+| [02-custom-checkout](examples/02-custom-checkout/) | Advanced styling & custom fields | ⭐⭐ Intermediate |
+| [03-webhook-development](examples/03-webhook-development/) | Local webhook testing setup | ⭐ Beginner |
+| [04-error-recovery](examples/04-error-recovery/) | Production error handling | ⭐⭐⭐ Intermediate |
+| [05-multi-currency](examples/05-multi-currency/) | International payments | ⭐⭐ Intermediate |
+| [06-extend-subscriptions](examples/06-extend-subscriptions/) | Add subscription features | ⭐⭐⭐⭐ Advanced |
+
+Each example includes comprehensive documentation, copy-pasteable code, and step-by-step tutorials.
+
 ## 📖 Documentation
 
 - [**Setup Guide**](docs/SETUP.md) - Detailed setup instructions
