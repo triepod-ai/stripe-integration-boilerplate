@@ -1,0 +1,140 @@
+// Prisma schema for Stripe integration
+// Database: PostgreSQL (recommended for production)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Payment {
+  id                    String   @id @default(cuid())
+  stripePaymentIntentId String   @unique @map("stripe_payment_intent_id")
+  amount                Int
+  currency              String   @default("usd")
+  status                PaymentStatus @default(PENDING)
+  description           String?
+
+  // Customer information
+  customerId            String?  @map("customer_id")
+  customerEmail         String?  @map("customer_email")
+
+  // Metadata
+  metadata              Json?
+
+  // Timestamps
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  customer              Customer? @relation(fields: [customerId], references: [id])
+
+  @@index([stripePaymentIntentId])
+  @@index([customerId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("payments")
+}
+
+model Customer {
+  id                String   @id @default(cuid())
+  stripeCustomerId  String   @unique @map("stripe_customer_id")
+  email             String   @unique
+  name              String?
+
+  // Metadata
+  metadata          Json?
+
+  // Timestamps
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  payments          Payment[]
+  subscriptions     Subscription[]
+
+  @@index([stripeCustomerId])
+  @@index([email])
+  @@map("customers")
+}
+
+model Subscription {
+  id                      String   @id @default(cuid())
+  stripeSubscriptionId    String   @unique @map("stripe_subscription_id")
+  customerId              String   @map("customer_id")
+  status                  SubscriptionStatus @default(ACTIVE)
+
+  // Pricing
+  priceId                 String?  @map("price_id")
+  amount                  Int?
+  currency                String   @default("usd")
+  interval                String?  // month, year
+
+  // Period
+  currentPeriodStart      DateTime @map("current_period_start")
+  currentPeriodEnd        DateTime @map("current_period_end")
+  cancelAtPeriodEnd       Boolean  @default(false) @map("cancel_at_period_end")
+  canceledAt              DateTime? @map("canceled_at")
+
+  // Trial
+  trialStart              DateTime? @map("trial_start")
+  trialEnd                DateTime? @map("trial_end")
+
+  // Metadata
+  metadata                Json?
+
+  // Timestamps
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  customer                Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([stripeSubscriptionId])
+  @@index([customerId])
+  @@index([status])
+  @@index([currentPeriodEnd])
+  @@map("subscriptions")
+}
+
+model WebhookEvent {
+  id              String   @id @default(cuid())
+  stripeEventId   String   @unique @map("stripe_event_id")
+  type            String
+  data            Json
+  processed       Boolean  @default(false)
+  processedAt     DateTime? @map("processed_at")
+  error           String?
+
+  // Timestamps
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([stripeEventId])
+  @@index([type])
+  @@index([processed])
+  @@index([createdAt])
+  @@map("webhook_events")
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  CANCELED
+  REFUNDED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  UNPAID
+  CANCELED
+  INCOMPLETE
+  INCOMPLETE_EXPIRED
+  TRIALING
+  PAUSED
+}
